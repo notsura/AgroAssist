@@ -23,7 +23,7 @@ import {
     Lock,
     Search
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const CropIntelligence = ({ crop, user, onBack }) => {
     const [activeTab, setActiveTab] = useState('Roadmap');
@@ -321,7 +321,7 @@ const CropIntelligence = ({ crop, user, onBack }) => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2.5rem' }}>
                             <div style={{ width: '64px', height: '64px', borderRadius: '16px', overflow: 'hidden', background: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 {item.image ? (
-                                    <img src={item.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <img src={imageUrl(item.image)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 ) : (
                                     item.name.toLowerCase().includes('bacteria') || item.name.toLowerCase().includes('virus') ? <Microscope size={28} color="var(--primary)" /> : <Bug size={28} color="var(--primary)" />
                                 )}
@@ -444,7 +444,7 @@ const CropIntelligence = ({ crop, user, onBack }) => {
                         }}
                     >
                         <img
-                            src={crop.image || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800'}
+                            src={imageUrl(crop.image) || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800'}
                             alt={crop.name}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />

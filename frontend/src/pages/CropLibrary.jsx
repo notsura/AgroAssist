@@ -18,7 +18,7 @@ import {
     Info,
     ArrowLeft
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const CropLibrary = ({ user, onSelectCrop }) => {
     const [crops, setCrops] = useState([]);
@@ -158,7 +158,7 @@ const CropLibrary = ({ user, onSelectCrop }) => {
                             >
                                 <div style={{
                                     height: '240px',
-                                    backgroundImage: `url(${c.image || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800'})`,
+                                    backgroundImage: `url(${imageUrl(c.image) || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800'})`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center'
                                 }} />

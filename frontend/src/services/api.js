@@ -1,4 +1,13 @@
-const API_BASE = 'http://127.0.0.1:5000/api';
+const _base = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || import.meta.env.VITE_API_BASE?.replace(/\/$/, '');
+export const API_BASE = _base ? (_base.includes('/api') ? _base : _base + '/api') : 'http://127.0.0.1:5000/api';
+export const STATIC_BASE = API_BASE.replace(/\/api\/?$/, '');
+
+/** Use for image URLs from API - prepends backend base when relative (needed when frontend is on different domain) */
+export const imageUrl = (url) => {
+  if (!url) return url;
+  if (url.startsWith('http')) return url;
+  return STATIC_BASE + (url.startsWith('/') ? url : '/' + url);
+};
 
 export const api = {
     async get(endpoint) {

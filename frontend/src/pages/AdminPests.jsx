@@ -17,7 +17,7 @@ import {
     Sprout,
     Shield
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const AdminPests = () => {
     const [pests, setPests] = useState([]);
@@ -80,11 +80,7 @@ const AdminPests = () => {
         const formData = new FormData();
         formData.append('file', file);
         try {
-            const response = await fetch('http://localhost:5000/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
+            const data = await api.post('/upload', formData);
             if (data.url) {
                 setEditingPest({ ...editingPest, image: data.url });
             }
@@ -193,7 +189,7 @@ const AdminPests = () => {
                                 <td style={{ padding: '1.5rem 2rem' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                         <div style={{ width: '50px', height: '50px', borderRadius: '12px', background: '#f1f5f9', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            {pest.image ? <img src={pest.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Bug size={24} color="#94a3b8" />}
+                                            {pest.image ? <img src={imageUrl(pest.image)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Bug size={24} color="#94a3b8" />}
                                         </div>
                                         <div style={{ fontWeight: 800, fontSize: '1rem' }}>{pest.name}</div>
                                     </div>
@@ -334,7 +330,7 @@ const AdminPests = () => {
                                                 {uploading ? (
                                                     <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid var(--primary-light)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                                                 ) : editingPest.image ? (
-                                                    <img src={editingPest.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                    <img src={imageUrl(editingPest.image)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                 ) : (
                                                     <>
                                                         <ImageIcon size={40} color="#cbd5e1" />

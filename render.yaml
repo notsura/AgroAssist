@@ -1,0 +1,31 @@
+# Render Blueprint - AgroAssist
+# Deploy: Connect repo at render.com, then use this blueprint or create services manually
+
+services:
+  - type: web
+    name: agroassist-api
+    runtime: python
+    region: oregon
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: AGMARKNET_API_KEY
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+
+  - type: static
+    name: agroassist-web
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE
+        fromService:
+          type: web
+          name: agroassist-api
+          property: url

@@ -21,7 +21,7 @@ import {
     XCircle,
     UploadCloud
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl as toImageUrl } from '../services/api';
 
 const CommunityHub = () => {
     const [posts, setPosts] = useState([]);
@@ -189,7 +189,7 @@ const CommunityHub = () => {
                                 />
                                 {imageUrl && (
                                     <div style={{ position: 'relative', marginBottom: '1rem', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                                        <img src={imageUrl} alt="Preview" style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }} />
+                                        <img src={toImageUrl(imageUrl)} alt="Preview" style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }} />
                                         <button
                                             onClick={() => setImageUrl('')}
                                             style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer' }}
@@ -336,7 +336,7 @@ const CommunityHub = () => {
 
                                 {post.image_url && (
                                     <div style={{ marginBottom: '1.5rem', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                                        <img src={post.image_url} alt="Post Attachment" style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
+                                        <img src={toImageUrl(post.image_url)} alt="Post Attachment" style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
                                     </div>
                                 )}
 

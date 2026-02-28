@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, send_from_directory
 import urllib.request
 import json
 from flask_cors import CORS
@@ -39,6 +39,7 @@ os.makedirs(RESOURCE_UPLOAD_FOLDER, exist_ok=True)
 
 app.config['CROP_UPLOAD_FOLDER'] = CROP_UPLOAD_FOLDER
 app.config['RESOURCE_UPLOAD_FOLDER'] = RESOURCE_UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = CROP_UPLOAD_FOLDER  # alias for /api/upload
 
 # --- Helper to serialize MongoDB docs ---
 def serialize_doc(doc):
@@ -565,6 +566,15 @@ def manage_pest(pest_id):
             db.pests.delete_one({"_id": ObjectId(pest_id)})
         return jsonify({"message": "Pest deleted"}), 200
 
+# Serve uploaded files (crops, resources) - needed when frontend is on different domain
+@app.route('/crops/<path:filename>')
+def serve_crop(filename):
+    return send_from_directory(app.config['CROP_UPLOAD_FOLDER'], filename)
+
+@app.route('/resources/<path:filename>')
+def serve_resource(filename):
+    return send_from_directory(app.config['RESOURCE_UPLOAD_FOLDER'], filename)
+
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -576,7 +586,9 @@ def upload_file():
         ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
         filename = secure_filename(f"crop_{int(datetime.now().timestamp())}.{ext}")
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return jsonify({"url": f"/crops/{filename}"}), 200
+        base = (os.getenv("BACKEND_URL") or os.getenv("RENDER_EXTERNAL_URL", "")).rstrip("/")
+        url = f"{base}/crops/{filename}" if base else f"/crops/{filename}"
+        return jsonify({"url": url}), 200
 
 @app.route('/api/posts', methods=['GET', 'POST'])
 def handle_posts():
@@ -719,7 +731,9 @@ def upload_resource_image():
     if file:
         filename = secure_filename(f"res_{int(datetime.now().timestamp())}_{file.filename}")
         file.save(os.path.join(app.config['RESOURCE_UPLOAD_FOLDER'], filename))
-        return jsonify({"url": f"/resources/{filename}"}), 200
+        base = (os.getenv("BACKEND_URL") or os.getenv("RENDER_EXTERNAL_URL", "")).rstrip("/")
+        url = f"{base}/resources/{filename}" if base else f"/resources/{filename}"
+        return jsonify({"url": url}), 200
 
 @app.route('/api/admin/resources', methods=['POST'])
 @admin_required

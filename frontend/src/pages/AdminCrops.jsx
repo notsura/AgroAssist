@@ -22,7 +22,7 @@ import {
     Upload,
     Image as ImageIcon
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const AdminCrops = () => {
     const [crops, setCrops] = useState([]);
@@ -137,11 +137,7 @@ const AdminCrops = () => {
         const formData = new FormData();
         formData.append('file', file);
         try {
-            const response = await fetch('http://localhost:5000/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
+            const data = await api.post('/upload', formData);
             if (data.url) {
                 setEditingCrop({ ...editingCrop, image: data.url });
             }
@@ -244,7 +240,7 @@ const AdminCrops = () => {
                         </div>
                     ) : editingCrop.image ? (
                         <div style={{ position: 'relative', width: '200px', height: '140px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
-                            <img src={editingCrop.image} alt="Crop Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={imageUrl(editingCrop.image)} alt="Crop Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: '0.3s' }} className="hover-overlay">
                                 <Upload color="white" size={24} />
                             </div>
@@ -325,7 +321,7 @@ const AdminCrops = () => {
                             }}
                         >
                             <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: isSelected ? 'white' : '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                                {pest.image ? <img src={pest.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Bug size={24} color={isSelected ? 'var(--primary)' : '#94a3b8'} />}
+                                {pest.image ? <img src={imageUrl(pest.image)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Bug size={24} color={isSelected ? 'var(--primary)' : '#94a3b8'} />}
                             </div>
                             <div style={{ flex: 1 }}>
                                 <div style={{ fontSize: '0.95rem', fontWeight: 800, color: isSelected ? 'var(--primary)' : 'var(--text)' }}>{pest.name}</div>
@@ -615,7 +611,7 @@ const AdminCrops = () => {
                     >
                         <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '1.5rem' }}>
                             <div style={{ width: '80px', height: '80px', background: '#f8fafc', borderRadius: '18px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #f1f5f9' }}>
-                                {crop.image ? <img src={crop.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Sprout size={32} color="var(--primary)" />}
+                                {crop.image ? <img src={imageUrl(crop.image)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Sprout size={32} color="var(--primary)" />}
                             </div>
                             <div style={{ flex: 1 }}>
                                 <div style={{ fontSize: '0.7rem', fontWeight: 900, color: 'var(--primary)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>{crop.category}</div>

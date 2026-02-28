@@ -29,7 +29,7 @@ import {
     CalendarDays,
     ShieldAlert
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const MockMarket = () => {
     const [marketData, setMarketData] = useState([]);
@@ -453,7 +453,7 @@ const MockMarket = () => {
                                         onClick={() => setSelectedItem(res)}
                                     >
                                         <div style={{
-                                            background: res.product_image ? `url(${res.product_image})` : 'var(--primary-light)',
+                                            background: res.product_image ? `url(${imageUrl(res.product_image)})` : 'var(--primary-light)',
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                             padding: res.product_image ? '0' : '3rem',
@@ -574,7 +574,7 @@ const MockMarket = () => {
                                 <div style={{
                                     width: '140px',
                                     height: '140px',
-                                    background: selectedItem.product_image ? `url(${selectedItem.product_image})` : 'var(--primary-light)',
+                                    background: selectedItem.product_image ? `url(${imageUrl(selectedItem.product_image)})` : 'var(--primary-light)',
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     borderRadius: '24px',

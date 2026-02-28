@@ -16,7 +16,7 @@ import {
     Upload,
     ExternalLink
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const AdminMarketplace = () => {
     const [resources, setResources] = useState([]);
@@ -419,7 +419,7 @@ const AdminMarketplace = () => {
                                             }}
                                         >
                                             {formData.product_image ? (
-                                                <img src={formData.product_image} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                <img src={imageUrl(formData.product_image)} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                             ) : (
                                                 <Store size={32} color="var(--border)" />
                                             )}

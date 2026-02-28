@@ -14,7 +14,7 @@ import {
     ChevronUp,
     ShieldAlert
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, imageUrl } from '../services/api';
 
 const AdminCommunity = () => {
     const [posts, setPosts] = useState([]);
@@ -210,7 +210,7 @@ const AdminCommunity = () => {
 
                                         {post.image_url && (
                                             <div style={{ marginTop: '1rem', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', maxWidth: '200px' }}>
-                                                <img src={post.image_url} alt="Attachment" style={{ width: '100%', height: 'auto' }} />
+                                                <img src={imageUrl(post.image_url)} alt="Attachment" style={{ width: '100%', height: 'auto' }} />
                                             </div>
                                         )}
 
