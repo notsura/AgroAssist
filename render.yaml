@@ -17,9 +17,9 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
 
-  - type: staticSite
+  - type: web
     name: agroassist-web
-    region: oregon
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
