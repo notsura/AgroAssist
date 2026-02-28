@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from pymongo import MongoClient
 from bson import ObjectId
+import certifi
 import os
 from datetime import timedelta, datetime
 from dotenv import load_dotenv
@@ -25,9 +26,9 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "super-secret-agro-ke
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
 jwt = JWTManager(app)
 
-# MongoDB Configuration
+# MongoDB Configuration - certifi fixes SSL handshake with Atlas on Render
 MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://agro:agro123@cluster0.artzmzx.mongodb.net/AgroAssist")
-client = MongoClient(MONGO_URI)
+client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 db = client["AgroAssist"]
 
 # Ensure upload directories exist
